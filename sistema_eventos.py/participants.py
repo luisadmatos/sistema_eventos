@@ -18,8 +18,8 @@ def cadastro_participantes(participantes):
 
     participantes[cpf] = {
         'nome': nome.strip(),
-        'email': email(),
-        'eventos_desejados': [e.strip() for e in eventos_desejados]
+        'email': email.strip(),
+        'eventos_desejados': [e.strip() for e in eventos_desejados.split()]
     }
 
     print(f'{nome} cadastrado com sucesso!')

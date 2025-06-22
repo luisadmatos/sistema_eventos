@@ -4,6 +4,13 @@ from util import limpar_tela
 def cadastro_eventos(eventos):
     limpar_tela()
     print('-----CADASTRO DE EVENTOS-----')
+
+    codigo = input('Informe o código do evento: ').strip()
+
+    if codigo in eventos:
+        print('Evento já cadastrado!')
+        return
+    
     nome = input('Digite o nome do evento: ').strip() 
     tipo = input('Digite o tipo do evento: ').strip() #workshop, palestra, minicurso, etc
     data = input('Digite a data que o evento ocorrerá: ').strip() #melhorar
@@ -12,11 +19,14 @@ def cadastro_eventos(eventos):
     #continuar
 
     eventos.append({
+        'codigo': codigo,
         'nome': nome,
         'tipo': tipo,
         'data': data,
         'tema': tema
     })
+
+    print(f'\nEvento {nome} cadastrado com sucesso!')
 '''
 ideias
 
