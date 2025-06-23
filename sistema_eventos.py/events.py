@@ -1,32 +1,129 @@
 
 from util import limpar_tela
 
-def cadastro_eventos(eventos):
+events = []
+
+def find_event_by_code(code):
+    for event in events:
+        if event['code'] == code:
+            return event
+    return None
+
+def list_events():
+    limpar_tela()
+    print('-----EVENTOS-----')
+
+    print('\n'.join(
+        f"{i}. {e['name']} - {e['date']} - {e['location']}"
+        for i, e in enumerate(events, 1)
+    ))
+
+    print()
+
+
+def add_event():
     limpar_tela()
     print('-----CADASTRO DE EVENTOS-----')
 
-    codigo = input('Informe o código do evento: ').strip()
-
-    if codigo in eventos:
+    try:
+        code = int(input('Informe o código do evento: ').strip())
+    except ValueError:
         print('Evento já cadastrado!')
         return
     
-    nome = input('Digite o nome do evento: ').strip() 
-    tipo = input('Digite o tipo do evento: ').strip() #workshop, palestra, minicurso, etc
-    data = input('Digite a data que o evento ocorrerá: ').strip() #melhorar
-    tema = input('Digite o tema central do evento: ').strip()
+    if find_event_by_code(code):
+        print('Evento já cadastrado!')
+        return
+    
+    name = input('Digite o nome do evento: ').strip() 
+    theme = input('Digite o tema central do evento: ').strip()
+    date = input('Digite a data que o evento ocorrerá: ').strip() #melhorar
+    location = input('Digite o local do evento: ').strip()
 
     #continuar
 
-    eventos.append({
-        'codigo': codigo,
-        'nome': nome,
-        'tipo': tipo,
-        'data': data,
-        'tema': tema
+    events.append({
+        'code': code,
+        'name': name,
+        'theme': theme,
+        'date': date,
+        'location': location
+
     })
 
-    print(f'\nEvento {nome} cadastrado com sucesso!')
+    print(f'\nEvento {name} cadastrado com sucesso!')
+
+
+def remove_event():
+    print('-----REMOVER EVENTO-----')
+
+    try:
+        code = int(input('Informe o código do evento: ').strip())
+    except ValueError:
+        print('Código inválido!')
+        return
+    
+    event = find_event_by_code(code)
+    if not event:
+        print('Evento não encontrado!')
+        return
+    
+    events.remove(event)
+    print(f'\nEvento {code} removido com sucesso!')
+
+
+def att_event():
+    print('-----ATUALIZAR EVENTO-----')
+
+    try:
+        code = int(input('Informe o código do evento que deseja atualizar: '))
+    except ValueError:
+        print('Código Inválido!')
+        return
+    
+    event = find_event_by_code(code)
+    if not event:
+        print('Evento não encontrado')
+        return
+    
+    print(f'Evento encontrado!')
+    print('Deixe em branco os campos que não deseja alterar.')
+
+    #continuar
+    
+
+def submenu_events():
+    options = {
+        '1': list_events,
+        '2': add_event,
+        '3': remove_event,
+        '4': att_event, 
+        '5': lambda: None
+    }
+
+    while True:
+        limpar_tela()
+        print(
+        ''' 
+        ----EVENTOS----
+        1- Listar Eventos
+        2- Adicionar Eventos
+        3- Remover Eventos
+        4- Atualizar Evento
+        5- Voltar
+       ----------------
+       '''
+        )
+
+        choice = input('Escolha uma opção: ').strip()
+        action = options.get(choice)
+
+        if action:
+            if choice == '5':
+                break
+            action()
+        else:
+            print('Opção inválida!')
 '''
 ideias
 
