@@ -1,14 +1,11 @@
 import events, participants, reports
 from util import limpar_tela
 
-events = {}
-participants = {}
-
 def main_menu():
     limpar_tela()
     options = {
-        '1': events,
-        '2': participants,
+        '1': events.submenu_events,
+        '2': participants.submenu_participants,
         '3': reports,
         '4': exit_program
 
@@ -40,9 +37,10 @@ def main_menu():
                 action()
         else:
             print("Opção inválida!") #verificar quando for feita alguma entrada invalida
+            input("Pressione Enter para continuar...")#para a mensagem nao sumir
 
 def exit_program():
     print('Saindo...')
 
-            
+main_menu()
 

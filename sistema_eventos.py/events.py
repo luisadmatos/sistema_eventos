@@ -2,7 +2,7 @@
 from util import limpar_tela
 
 events = []
-
+    
 def find_event_by_code(code):
     for event in events:
         if event['code'] == code:
@@ -13,12 +13,14 @@ def list_events():
     limpar_tela()
     print('-----EVENTOS-----')
 
-    print('\n'.join(
-        f"{i}. {e['name']} - {e['date']} - {e['location']}"
-        for i, e in enumerate(events, 1)
-    ))
+    if not events:
+        print("Nenhum evento cadastrado.")
+    else:
+        for i, e in enumerate(events, 1):
+            print(f"{i}. {e['name']} - {e['date']} - {e['location']}")
 
     print()
+    
 
 
 def add_event():
@@ -52,6 +54,7 @@ def add_event():
     })
 
     print(f'\nEvento {name} cadastrado com sucesso!')
+    input("Pressione Enter para continuar...")
 
 
 def remove_event():
@@ -124,6 +127,8 @@ def submenu_events():
             action()
         else:
             print('Opção inválida!')
+            input("Pressione Enter para continuar...")
+            
 '''
 ideias
 
