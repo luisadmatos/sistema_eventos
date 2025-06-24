@@ -2,7 +2,8 @@
 from util import limpar_tela
 #cadastro de participante 
 
-participants = {}
+participants = []
+
 def submenu_participants():
     options = {
         '1': list_partic,

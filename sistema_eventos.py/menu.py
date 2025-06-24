@@ -14,6 +14,7 @@ def main_menu():
 
     }
 
+    #fazer o menu mais bonito
     while True:
         limpar_tela()
         print(
