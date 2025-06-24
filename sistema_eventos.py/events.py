@@ -2,12 +2,13 @@
 from util import limpar_tela
 
 events = []
-    
+   
 def find_event_by_code(code):
     for event in events:
         if event['code'] == code:
             return event
     return None
+
 
 def list_events():
     limpar_tela()
@@ -15,12 +16,13 @@ def list_events():
 
     if not events:
         print("Nenhum evento cadastrado.")
+        input("Pressione Enter para continuar...")
     else:
         for i, e in enumerate(events, 1):
             print(f"{i}. {e['name']} - {e['date']} - {e['location']}")
 
     print()
-    
+    input("Pressione Enter para continuar...")
 
 
 def add_event():
@@ -64,11 +66,13 @@ def remove_event():
         code = int(input('Informe o código do evento: ').strip())
     except ValueError:
         print('Código inválido!')
+        input("Pressione Enter para continuar...")
         return
     
     event = find_event_by_code(code)
     if not event:
         print('Evento não encontrado!')
+        input("Pressione Enter para continuar...")
         return
     
     events.remove(event)
@@ -82,11 +86,13 @@ def att_event():
         code = int(input('Informe o código do evento que deseja atualizar: '))
     except ValueError:
         print('Código Inválido!')
+        input("Pressione Enter para continuar...")
         return
     
     event = find_event_by_code(code)
     if not event:
         print('Evento não encontrado')
+        input("Pressione Enter para continuar...")
         return
     
     print(f'Evento encontrado!')
