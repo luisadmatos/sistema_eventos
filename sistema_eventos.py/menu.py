@@ -1,8 +1,8 @@
 import events, participants, reports
-from util import limpar_tela
+from util import clear_screen
 
 def main_menu():
-    limpar_tela()
+    clear_screen()
     options = {
         '1': events.submenu_events,
         '2': participants.submenu_participants,
@@ -13,7 +13,7 @@ def main_menu():
 
     #fazer o menu mais bonito
     while True:
-        limpar_tela()
+        clear_screen()
         print(
         ''' 
         ----MENU PRINCIPAL----

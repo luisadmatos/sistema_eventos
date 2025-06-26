@@ -1,5 +1,6 @@
 
-from util import limpar_tela
+from util import clear_screen
+from util import update_infos
 
 events = []
    
@@ -11,7 +12,7 @@ def find_event_by_code(code):
 
 
 def list_events():
-    limpar_tela()
+    clear_screen()
     print('-----EVENTOS-----')
 
     if not events:
@@ -26,7 +27,7 @@ def list_events():
 
 
 def add_event():
-    limpar_tela()
+    clear_screen()
     print('-----CADASTRO DE EVENTOS-----')
 
     try:
@@ -41,10 +42,8 @@ def add_event():
     
     name = input('Digite o nome do evento: ').strip() 
     theme = input('Digite o tema central do evento: ').strip()
-    date = input('Digite a data que o evento ocorrerá: ').strip() #melhorar
+    date = input('Digite a data que o evento ocorrerá: ').strip() 
     location = input('Digite o local do evento: ').strip()
-
-    #continuar
 
     events.append({
         'code': code,
@@ -77,7 +76,7 @@ def remove_event():
     
     events.remove(event)
     print(f'\nEvento {code} removido com sucesso!')
-
+    input("Pressione Enter para continuar...")
 
 def att_event():
     print('-----ATUALIZAR EVENTO-----')
@@ -98,7 +97,17 @@ def att_event():
     print(f'Evento encontrado!')
     print('Deixe em branco os campos que não deseja alterar.')
 
-    #continuar
+    fields = {
+        'name': 'new name',
+        'theme': 'new theme',
+        'date': 'new date',
+        'location': 'new location'
+    }
+
+    update_infos(event, fields)
+
+    print('Evento atualizado!')
+    input('Pressione Enter para voltar...')
     
 
 def submenu_events():
@@ -111,7 +120,7 @@ def submenu_events():
     }
 
     while True:
-        limpar_tela()
+        clear_screen()
         print(
         ''' 
         ----EVENTOS----
@@ -134,15 +143,4 @@ def submenu_events():
         else:
             print('Opção inválida!')
             input("Pressione Enter para continuar...")
-            
-'''
-ideias
 
-- importar algum tipo de verificação para que apenas os usuarios responsaveis pelo cadastro de eventos possa realizar isso
-- colocar algum tipo de calendario para não ser preciso digitar manualmente a data desejada
-- estipular uma data para o evento ex: 14 a 19 de junho
-- ao inves de digitar o tipo de evento, colocar uma maneira melhor (listar os tipos para o user escolher?)
-- funcionalidade para voltar ao menu
--
-
-'''

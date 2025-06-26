@@ -1,8 +1,8 @@
 
-from util import limpar_tela
+from util import clear_screen
 #cadastro de participante 
 
-participants = []
+participants = {}
 
 def submenu_participants():
     options = {
@@ -15,7 +15,7 @@ def submenu_participants():
     }
 
     while True:
-        limpar_tela()
+        clear_screen()
         print(
         ''' 
         ----PARTICIPANTES----
@@ -38,6 +38,7 @@ def submenu_participants():
             action()
         else:
             print('Opção inválida!')
+            input("Pressione Enter para continuar...")
 
 
 def list_partic():
@@ -52,7 +53,8 @@ def verify_duplicate():
 
 
 def add_partic():
-    limpar_tela()
+    clear_screen()
+    
     print('-----CADASTRO DE PARTICIPANTES-----')
     
     cpf = input('Informe o CPF do participante (apenas números): ')
@@ -71,13 +73,14 @@ def add_partic():
         'wishlist': [e.strip() for e in wishlist.split()]
     }
 
-    participants.append({
+    participants = {
         'name': name.strip(),
         'email': email.strip(),
         'wishlist': [e.strip() for e in wishlist.split()]
-    })
+    }
 
     print(f'{name} cadastrado com sucesso!')
+    input("Pressione Enter para continuar...")
 
 '''
 -pensar em verificação se evento existe ou listagem de eventos existentes. 
