@@ -1,4 +1,5 @@
 
+import datetime
 from util import clear_screen
 from util import update_infos
 
@@ -19,7 +20,9 @@ def list_events():
         print("Nenhum evento cadastrado.")
         input("Pressione Enter para continuar...")
     else:
-        for i, e in enumerate(events, 1):
+        ordered_events = sorted(events, key=lambda e: datetime.datetime.strptime(e['date'], '%d/%m/%Y'))
+
+        for i, e in enumerate(ordered_events, 1):
             print(f"{i}. {e['name']} - {e['date']} - {e['location']}")
 
     print()
@@ -42,14 +45,25 @@ def add_event():
     
     name = input('Digite o nome do evento: ').strip() 
     theme = input('Digite o tema central do evento: ').strip()
-    date = input('Digite a data que o evento ocorrerá: ').strip() 
+    
+    while True:
+        date_str = input('Digite a data que o evento ocorrerá (formato: DD/MM/AAAA): ')
+        try:
+            date_obj = datetime.datetime.strptime(date_str, '%d/%m/%Y')
+            today = datetime.date.today()
+            if date_obj < today:
+                print('Data inválida, Digite uma data futura.')
+            break
+        except ValueError:
+            print('Formato de data incorreto! Tente novamente no formato DD/MM/AAAA. ')
+
     location = input('Digite o local do evento: ').strip()
 
     events.append({
         'code': code,
         'name': name,
         'theme': theme,
-        'date': date,
+        'date': date_str,
         'location': location
 
     })
