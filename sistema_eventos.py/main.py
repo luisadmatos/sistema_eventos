@@ -1,16 +1,47 @@
+import events, participants, reports
+from util import clear_screen
 
-'''
-o que preciso fazer?
+def main_menu():
+    clear_screen()
+    options = {
+        '1': events.submenu_events,
+        '2': participants.submenu_participants,
+        '3': reports,
+        '4': exit_program
 
-- cadastrar eventos
-- cadastrar participante
-- fazer o menu
-- exibir lista de eventos
-- listagem dos participantes por evento
--  busca por participantes a partir de seu codigo
--  geracao de estatisticas uteis para os organizadores, como os participantes mais ativos e os temas mais frequentes
+    }
 
+    #fazer o menu mais bonito
+    while True:
+        clear_screen()
+        print(
+        ''' 
+        ----MENU PRINCIPAL----
+        1- Gerenciar Eventos
+        2- Gerenciar Participantes
+        3- Relatórios
+        4- Sair
+       ------------------------
+       '''
+       )
 
+        choice = input('Escolha uma opção: ').strip()
 
+        action = options.get(choice)
 
-'''
+        if action:
+            if choice == "4":
+                action()
+                break
+            else:
+                action()
+        else:
+            print("Opção inválida!") #verificar quando for feita alguma entrada invalida
+            input("Pressione Enter para continuar...")#para a mensagem nao sumir
+
+def exit_program():
+    print('Saindo...')
+
+if __name__ == '__main__':
+    main_menu()
+

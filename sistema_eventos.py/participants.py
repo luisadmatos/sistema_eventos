@@ -1,15 +1,27 @@
 
-from util import clear_screen
+from util import clear_screen, list_events, pause, update_infos
+from events import events
+
 #cadastro de participante 
 
 participants = {}
 
+def find_by_cpf(cpf):
+    return participants.get(cpf.strip())
+
+def cpf_is_valid(cpf):
+    if cpf.isdigit() and len(cpf) == 11:
+        return True
+    print('CPF inválido. Deve conter 11 números. ')
+    pause()
+    return False
+
 def submenu_participants():
     options = {
-        '1': list_partic,
+        '1': list_partic_by_event,
         '2': add_partic,
         '3': remove_partic,
-        '4': att_info,
+        '4': update_participant_info,
         '5': verify_duplicate, 
         '6': lambda: None #voltar
     }
@@ -35,55 +47,121 @@ def submenu_participants():
         if action:
             if choice == '6':
                 break
-            action()
+            action(participants)
         else:
             print('Opção inválida!')
             input("Pressione Enter para continuar...")
 
 
-def list_partic():
-    pass
-def remove_partic():
-    pass
-def att_info():
-    pass
-def verify_duplicate(): 
-    pass
-
-
-
-def add_partic():
+def list_partic_by_event(participants):
     clear_screen()
+    print('-----PARTICIPANTES POR EVENTO-----')
+
+    event_name = input('Informe o nome do evento: ').strip()
+
+    founded = []
+
+    for cpf, data in participants.items():
+        events = [e.lower() for e in data.get('wishlist', ())]
+
+        if event_name in events:
+            founded.append((cpf, data['name'], data['email']))
+
+    if founded:
+        print(f'Participantes inscritos no evento "{event_name}": ')
+        for cpf, name, email in founded:
+            print(f'Nome:{name}')
+            print(f'CPF:{cpf}')
+            print(f'Email:{email}')
+
+    else:
+        print(f'Nenhum participante inscrito no evento "{event_name}"') 
+    pause()
+
+
+def remove_partic(participants):
+    clear_screen()
+    print('-----REMOVER PARTICIPANTE-----')
+
+    cpf = input('Informe o CPF do participante a ser removido: ')
+
+    if not cpf_is_valid(cpf):
+        print('CPF inválido. Deve conter 11 números. ')
+        pause()
+        return
     
+    if cpf in participants:
+        confirm = input(f'Tem certeza que deseja remover {participants[cpf]['name']}? (s/n)').strip()
+        if confirm == 's':
+            del participants[cpf]
+            print('Participante removido com sucesso')
+        else:
+            print('Remoção cancelada. ')
+    else:
+        print('CPF não encontrado. Tente novamente')
+        return
+    
+    pause()
+
+def update_participant_info(participants):
+    print('-----ATUALIZAR CADASTRO-----')
+
+    cpf = input('Informe o cpf do participante que deseja atualizar: ')
+    
+    if not cpf_is_valid(cpf):
+        print('CPF Inválido!')
+        pause()
+        return
+    
+    participant = find_by_cpf(cpf)
+    if not participant:
+        print('Participante não encontrado')
+        pause()
+        return
+    
+    print(f'Participante encontrado!')
+    print('Deixe em branco os campos que não deseja alterar.')
+
+    fields = {
+        'email': 'new email',
+        'wishlist': 'new wishlist'
+    }
+
+    update_infos(participant, fields)
+
+    print('Cadastro atualizado!')
+    pause()
+
+
+def verify_duplicate(): 
+    clear_screen()
+    print('')
+
+def add_partic(participants):
+    clear_screen()
     print('-----CADASTRO DE PARTICIPANTES-----')
     
     cpf = input('Informe o CPF do participante (apenas números): ')
 
     if cpf in participants:
-        print('Participante já cadastrado!') 
+        print('Participante já cadastrado!')
+        pause()
         return
     
     name = input('Informe o nome: ')
     email = input('Informe o email: ')
-    wishlist = input('Qual (is) evento (s) deseja participar?') #listar eventos existentes?
+
+    list_events(events)
+
+    wishlist = input('Qual (is) evento (s) deseja participar?') 
+    chosen_events = [e.strip() for e in wishlist.split(',')]
+
 
     participants[cpf] = {
         'name': name.strip(),
         'email': email.strip(),
-        'wishlist': [e.strip() for e in wishlist.split()]
-    }
-
-    participants = {
-        'name': name.strip(),
-        'email': email.strip(),
-        'wishlist': [e.strip() for e in wishlist.split()]
+        'wishlist': chosen_events
     }
 
     print(f'{name} cadastrado com sucesso!')
-    input("Pressione Enter para continuar...")
-
-'''
--pensar em verificação se evento existe ou listagem de eventos existentes. 
--cadastrar diretamente no evento ou continuar com o cadastro geral e dps escolha de evento?
--colocar a opção de tipo de evento e os nomes deles 
-'''
+    pause()

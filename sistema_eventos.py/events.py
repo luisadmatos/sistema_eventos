@@ -1,16 +1,47 @@
 
-import datetime
-from util import clear_screen
-from util import update_infos
+from datetime import datetime
+from util import clear_screen, pause, update_infos
 
 events = []
    
-def find_event_by_code(code):
-    for event in events:
-        if event['code'] == code:
-            return event
-    return None
+def find_by_name(name):
+    name = name.strip().lower()
+    matches = [event for event in events if event['name'].strip().lower() == name]
+    return matches[0] if matches else None
+    
+def select_or_create_theme():
+    themes = ['Inteligência Artificial', 'Web', 'Segurança', 'Banco de Dados', 'Mobile']
+    print('----Temas disponíveis----')
 
+    options = {i+1: theme for i, theme in enumerate(themes)}
+    create_option = len(themes) + 1
+    options[create_option] = 'Cadastrar novo tema'
+
+    for key, value in options.items():
+        print(f'{key}. {value}')
+
+    while True:
+        try:
+            choice = int(input('Escolha um tema ou cadastre um tema novo: '))
+        except ValueError:
+            print('Entrada inválida. Digite um número: ')
+            continue
+
+        if choice in options and choice != create_option:
+            return options[choice]
+        
+        if choice == create_option:
+            new_theme = input('Digite o tema que deseja cadastrar: ').strip()
+            if new_theme:
+                themes.append(new_theme)
+                print(f'Tema "{new_theme}" cadastrado com sucesso')
+                return new_theme
+            else:
+                print('Tema inválido. Digite novamente.')
+            continue
+
+        print('Opção inválida. Tente novamente.')
+    
 
 def list_events():
     clear_screen()
@@ -18,15 +49,15 @@ def list_events():
 
     if not events:
         print("Nenhum evento cadastrado.")
-        input("Pressione Enter para continuar...")
+        return
     else:
-        ordered_events = sorted(events, key=lambda e: datetime.datetime.strptime(e['date'], '%d/%m/%Y'))
+        ordered_events = sorted(events, key=lambda e: e['date'])
 
         for i, e in enumerate(ordered_events, 1):
-            print(f"{i}. {e['name']} - {e['date']} - {e['location']}")
+            print(f"{i}. {e['name']} - {e['date'].strftime('%d%m%Y')} - {e['location']}")
 
     print()
-    input("Pressione Enter para continuar...")
+    print(pause())
 
 
 def add_event():
@@ -34,78 +65,80 @@ def add_event():
     print('-----CADASTRO DE EVENTOS-----')
 
     try:
-        code = int(input('Informe o código do evento: ').strip())
+        name = input('Digite o nome do evento: ').strip() 
     except ValueError:
         print('Evento já cadastrado!')
         return
     
-    if find_event_by_code(code):
+    if find_by_name(name):
         print('Evento já cadastrado!')
         return
     
-    name = input('Digite o nome do evento: ').strip() 
-    theme = input('Digite o tema central do evento: ').strip()
+    theme = select_or_create_theme()
     
     while True:
         date_str = input('Digite a data que o evento ocorrerá (formato: DD/MM/AAAA): ')
         try:
-            date_obj = datetime.datetime.strptime(date_str, '%d/%m/%Y')
-            today = datetime.date.today()
-            if date_obj < today:
+            date_obj = datetime.strptime(date_str, '%d/%m/%Y')
+            now = datetime.now()
+
+            if date_obj < now:
                 print('Data inválida, Digite uma data futura.')
-            break
+            else: 
+                print('Data válida!')
+                break
+
         except ValueError:
             print('Formato de data incorreto! Tente novamente no formato DD/MM/AAAA. ')
 
     location = input('Digite o local do evento: ').strip()
 
     events.append({
-        'code': code,
         'name': name,
         'theme': theme,
-        'date': date_str,
+        'date': date_obj,
         'location': location
 
     })
 
     print(f'\nEvento {name} cadastrado com sucesso!')
-    input("Pressione Enter para continuar...")
+    pause()
 
 
 def remove_event():
     print('-----REMOVER EVENTO-----')
 
     try:
-        code = int(input('Informe o código do evento: ').strip())
+        name = input('Informe o nome do evento: ').strip()
     except ValueError:
-        print('Código inválido!')
+        print('Nome inválido!')
         input("Pressione Enter para continuar...")
         return
     
-    event = find_event_by_code(code)
+    event = find_by_name(name)
     if not event:
         print('Evento não encontrado!')
-        input("Pressione Enter para continuar...")
+        pause()
         return
     
     events.remove(event)
-    print(f'\nEvento {code} removido com sucesso!')
-    input("Pressione Enter para continuar...")
+    print(f'\nEvento {name} removido com sucesso!')
+    pause()
 
-def att_event():
+def update_event():
     print('-----ATUALIZAR EVENTO-----')
 
-    try:
-        code = int(input('Informe o código do evento que deseja atualizar: '))
-    except ValueError:
-        print('Código Inválido!')
-        input("Pressione Enter para continuar...")
+    name = input('Informe o nome do evento que deseja atualizar: ')
+    
+    if not name:
+        print('Nome Inválido!')
+        pause()
         return
     
-    event = find_event_by_code(code)
+    event = find_by_name(name)
     if not event:
         print('Evento não encontrado')
-        input("Pressione Enter para continuar...")
+        pause()
         return
     
     print(f'Evento encontrado!')
@@ -121,7 +154,7 @@ def att_event():
     update_infos(event, fields)
 
     print('Evento atualizado!')
-    input('Pressione Enter para voltar...')
+    pause()
     
 
 def submenu_events():
@@ -129,7 +162,7 @@ def submenu_events():
         '1': list_events,
         '2': add_event,
         '3': remove_event,
-        '4': att_event, 
+        '4': update_event, 
         '5': lambda: None
     }
 
@@ -156,5 +189,5 @@ def submenu_events():
             action()
         else:
             print('Opção inválida!')
-            input("Pressione Enter para continuar...")
+            pause()
 
