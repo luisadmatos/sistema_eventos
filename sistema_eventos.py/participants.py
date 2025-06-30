@@ -135,7 +135,29 @@ def update_participant_info(participants):
 
 def verify_duplicate(): 
     clear_screen()
-    print('')
+    print('====VERIFICAR E REMOVER DUPLICATAS====')
+
+    seen = {}
+    duplicates = []
+
+    for cpf, data in participants.items():
+        key = (data['name'].strip().lower(), data['email'].strip().lower())
+        if key in seen:
+            duplicates.append(cpf)
+        else:
+            seen[key] = cpf
+    
+    if not duplicates:
+        print('Nenhum participante duplicado encontrado.')
+    else:
+        print(f'Foram encontrados {len(duplicates)} participante(s) duplicado(s)\n')
+        for cpf in duplicates:
+            name = participants[cpf]['name']
+            print(f'Removendo duplicata: {name} (CPF: {cpf})')
+            del participants[cpf]
+        print('\nTodos os registros duplicados foram duplicados foram removidos.')
+
+    pause()
 
 def add_partic(participants):
     clear_screen()

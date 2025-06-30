@@ -6,7 +6,7 @@ def main_menu():
     options = {
         '1': events.submenu_events,
         '2': participants.submenu_participants,
-        '3': reports,
+        '3': reports.submenu_reports,
         '4': exit_program
 
     }

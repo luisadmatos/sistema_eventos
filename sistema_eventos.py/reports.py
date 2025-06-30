@@ -4,18 +4,21 @@ def submenu_reports():
     clear_screen()
 
     options = {
-        '1': most_actives,
-        '2': most_frequent,
-        '3': events_by_theme,
-        '4': events_by_date,
-        '5': low_attendance_events,
-        '6': rate_by_theme,
+        '1': report_most_actives,
+        '2': report_most_frequent,
+        '3': report_events_by_theme,
+        '4': report_events_by_date,
+        '5': report_low_attendance_events,
+        '6': report_rate_by_theme,
         '7': lambda: None
     }
 
     while True:
         clear_screen()
         print('''
+            =================================  
+                        RELATÓRIOS
+            =================================  
             1. Participantes mais ativos
             2. Eventos mais frequentes
             3. Eventos por tema
@@ -40,20 +43,20 @@ def submenu_reports():
             pause()
 
 
-def most_actives():
+def report_most_actives():
     pass
 
-def most_frequent():
+def report_most_frequent():
     pass
 
-def events_by_theme():
+def report_events_by_theme():
     pass
 
-def events_by_date():
+def report_events_by_date():
     pass
 
-def low_attendance_events():
+def report_low_attendance_events():
     pass
 
-def rate_by_theme():
+def report_rate_by_theme():
     pass

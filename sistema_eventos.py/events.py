@@ -54,7 +54,7 @@ def list_events():
         ordered_events = sorted(events, key=lambda e: e['date'])
 
         for i, e in enumerate(ordered_events, 1):
-            print(f"{i}. {e['name']} - {e['date'].strftime('%d%m%Y')} - {e['location']}")
+            print(f"{i}. {e['name']} - {e['date'].strftime('%d/%m/%Y')} - {e['location']}")
 
     print()
     print(pause())
