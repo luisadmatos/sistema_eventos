@@ -1,4 +1,6 @@
-import events, participants, reports
+import events
+import participants
+import reports
 from util import clear_screen
 
 def main_menu():
@@ -16,12 +18,22 @@ def main_menu():
         clear_screen()
         print(
         ''' 
-        ----MENU PRINCIPAL----
-        1- Gerenciar Eventos
-        2- Gerenciar Participantes
-        3- Relatórios
-        4- Sair
-       ------------------------
+        ╔═══════════════════════════════════════════════════════════╗
+        ║                                                           ║
+        ║            BEM VINDO AO PROJETO COMUNIDADE TECH!          ║
+        ║                                                           ║
+        ║            Por favor, selecione a opção que deseja:       ║
+        ║                                                           ║
+        ╠═══════════════════════════════════════════════════════════╣
+        ║                                                           ║
+        ║   1. Gerenciar Eventos                                    ║
+        ║   2. Gerenciar Participantes                              ║
+        ║   3. Relatórios                                           ║
+        ║   4. Sair                                                 ║
+        ║                                                           ║
+        ╠═══════════════════════════════════════════════════════════╣
+        ║          Utilize o número ao lado da sua preferência      ║
+        ╚═══════════════════════════════════════════════════════════╝
        '''
        )
 

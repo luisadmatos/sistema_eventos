@@ -1,4 +1,3 @@
-
 from util import clear_screen, list_events, pause, update_infos
 from events import events
 
@@ -10,11 +9,7 @@ def find_by_cpf(cpf):
     return participants.get(cpf.strip())
 
 def cpf_is_valid(cpf):
-    if cpf.isdigit() and len(cpf) == 11:
-        return True
-    print('CPF inválido. Deve conter 11 números. ')
-    pause()
-    return False
+    return cpf.isdigit() and len(cpf) == 11
 
 def submenu_participants():
     options = {
@@ -64,7 +59,7 @@ def list_partic_by_event(participants):
     for cpf, data in participants.items():
         events = [e.lower() for e in data.get('wishlist', ())]
 
-        if event_name in events:
+        if event_name.lower() in events:
             founded.append((cpf, data['name'], data['email']))
 
     if founded:
@@ -91,7 +86,7 @@ def remove_partic(participants):
         return
     
     if cpf in participants:
-        confirm = input(f'Tem certeza que deseja remover {participants[cpf]['name']}? (s/n)').strip()
+        confirm = input(f'Tem certeza que deseja remover {participants[cpf]["name"]}? (s/n)').strip()
         if confirm == 's':
             del participants[cpf]
             print('Participante removido com sucesso')
@@ -104,6 +99,7 @@ def remove_partic(participants):
     pause()
 
 def update_participant_info(participants):
+    clear_screen()
     print('-----ATUALIZAR CADASTRO-----')
 
     cpf = input('Informe o cpf do participante que deseja atualizar: ')
@@ -155,7 +151,7 @@ def verify_duplicate():
             name = participants[cpf]['name']
             print(f'Removendo duplicata: {name} (CPF: {cpf})')
             del participants[cpf]
-        print('\nTodos os registros duplicados foram duplicados foram removidos.')
+        print('\nTodos os registros duplicados foram removidos.')
 
     pause()
 
@@ -164,6 +160,11 @@ def add_partic(participants):
     print('-----CADASTRO DE PARTICIPANTES-----')
     
     cpf = input('Informe o CPF do participante (apenas números): ')
+
+    if not cpf_is_valid(cpf):
+        print('CPF inválido. Deve conter 11 números.')
+        pause()
+        return
 
     if cpf in participants:
         print('Participante já cadastrado!')
