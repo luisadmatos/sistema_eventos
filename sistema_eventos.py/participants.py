@@ -1,4 +1,4 @@
-from util import clear_screen, list_events, pause, update_infos
+from util import clear_screen, pause, update_infos
 from events import events
 
 #cadastro de participante 
@@ -6,9 +6,27 @@ from events import events
 participants = {}
 
 def find_by_cpf(cpf):
+    """
+    Busca um participante pelo CPF.
+    
+    Args:
+        cpf (str): CPF do participante para busca
+        
+    Returns:
+        dict ou None: Dados do participante se encontrado, None caso contrário
+    """
     return participants.get(cpf.strip())
 
 def cpf_is_valid(cpf):
+    """
+    Valida se o CPF está no formato correto.
+    
+    Args:
+        cpf (str): CPF a ser validado
+        
+    Returns:
+        bool: True se CPF é válido (11 dígitos numéricos), False caso contrário
+    """
     return cpf.isdigit() and len(cpf) == 11
 
 def submenu_participants():
@@ -156,6 +174,18 @@ def verify_duplicate():
     pause()
 
 def add_partic(participants):
+    """
+    Cadastra um novo participante no sistema.
+    
+    Solicita ao usuário:
+    - CPF (com validação)
+    - Nome completo
+    - Email
+    - Lista de eventos de interesse
+    
+    Args:
+        participants (dict): Dicionário de participantes do sistema
+    """
     clear_screen()
     print('-----CADASTRO DE PARTICIPANTES-----')
     
@@ -174,9 +204,21 @@ def add_partic(participants):
     name = input('Informe o nome: ')
     email = input('Informe o email: ')
 
-    list_events(events)
+    # Mostrar eventos disponíveis
+    print('\n-----EVENTOS DISPONÍVEIS-----')
+    if not events:
+        print("Nenhum evento cadastrado.")
+    else:
+        from datetime import datetime
+        for i, e in enumerate(events, 1):
+            if isinstance(e['date'], datetime):
+                date_str = e['date'].strftime('%d/%m/%Y')
+            else:
+                date_str = str(e['date'])
+            print(f"{i}. {e['name']} - {date_str} - {e['location']}")
+    print('--------------------------------')
 
-    wishlist = input('Qual (is) evento (s) deseja participar?') 
+    wishlist = input('Qual (is) evento (s) deseja participar? (digite os nomes separados por vírgula): ') 
     chosen_events = [e.strip() for e in wishlist.split(',')]
 
 

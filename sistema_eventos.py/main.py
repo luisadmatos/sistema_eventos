@@ -4,6 +4,15 @@ import reports
 from util import clear_screen
 
 def main_menu():
+    """
+    Exibe o menu principal do sistema e gerencia a navegação entre os módulos.
+    
+    O usuário pode escolher entre:
+    - Gerenciar Eventos
+    - Gerenciar Participantes  
+    - Relatórios
+    - Sair do programa
+    """
     clear_screen()
     options = {
         '1': events.submenu_events,
@@ -13,7 +22,6 @@ def main_menu():
 
     }
 
-    #fazer o menu mais bonito
     while True:
         clear_screen()
         print(
@@ -52,6 +60,9 @@ def main_menu():
             input("Pressione Enter para continuar...")#para a mensagem nao sumir
 
 def exit_program():
+    """
+    Exibe mensagem de saída e encerra o programa.
+    """
     print('Saindo...')
 
 if __name__ == '__main__':

@@ -1,12 +1,32 @@
 import os
 
 def clear_screen():
+    """
+    Limpa a tela do terminal.
+    
+    Funciona em Windows (cls) e sistemas Unix/Linux (clear).
+    """
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def pause():
+    """
+    Pausa a execução até o usuário pressionar Enter.
+    
+    Usado para permitir que o usuário leia mensagens antes de continuar.
+    """
     input('Pressione Enter para continuar...')
 
 def update_infos(subject: dict, fields: dict):
+    """
+    Atualiza informações de um dicionário baseado na entrada do usuário.
+    
+    Args:
+        subject (dict): Dicionário a ser atualizado
+        fields (dict): Mapeamento de campos {chave: descrição_para_usuario}
+        
+    Exibe os valores atuais e permite ao usuário alterar apenas os campos desejados.
+    Campos em branco não são alterados.
+    """
     updated = []
 
     for key_field, identifier in fields.items():
