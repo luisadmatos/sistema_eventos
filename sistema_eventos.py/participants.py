@@ -81,7 +81,11 @@ def add_partic(participants):
     email = input('Informe o email: ')
 
     # Show available events
-    print('\n-----EVENTOS DISPONÍVEIS-----')
+    print('''
+        =================================  
+              EVENTOS DISPONÍVEIS
+        ================================= 
+        ''')
     if not events:
         print("Nenhum evento cadastrado.")
     else:
@@ -215,24 +219,20 @@ def submenu_participants():
         '2': add_partic,
         '3': remove_partic,
         '4': update_participant_info,
-        '5': verify_duplicate, 
-        '6': lambda: None  # voltar
+        '5': lambda: None  
     }
 
     while True:
         clear_screen()
-        print(
-        ''' 
-    =========================================    
-        PARTICIPANTES
-
+        print('''
+        ===================================== 
+                    PARTICIPANTES
+        =====================================  
         1- Listar Participantes
         2- Adicionar Participantes
         3- Remover Participantes
         4- Atualizar Cadastro
-        5- Verificar Participantes Duplicados
-        6- Voltar
-    ==========================================   
+        5- Voltar  
        '''
     )
 

@@ -40,7 +40,11 @@ def update_infos(subject: dict, fields: dict):
 def list_events(events):
     """Simple event list (auxiliary function)"""
     clear_screen()
-    print('-----EVENTOS-----')
+    print('''
+        =================================  
+                LISTA DE EVENTOS
+        ================================= 
+        ''')
 
     if not events:
         print("Nenhum evento cadastrado.")

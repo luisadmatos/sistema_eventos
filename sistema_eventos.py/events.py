@@ -20,7 +20,11 @@ def find_by_name(name):
 def select_or_create_theme():
     """Select an existing theme or create a new one"""
     themes = ['Inteligência Artificial', 'Web', 'Segurança', 'Banco de Dados', 'Mobile']
-    print('----Temas disponíveis----')
+    print('''
+        =================================  
+             TEMAS DISPONÍVEIS
+        ================================= 
+        ''')
 
     options = {i+1: theme for i, theme in enumerate(themes)}
     create_option = len(themes) + 1
@@ -67,7 +71,11 @@ def select_or_create_theme():
 
 def list_events():
     clear_screen()
-    print('-----EVENTOS-----')
+    print('''
+        =================================  
+                    EVENTOS
+        ================================= 
+        ''')
 
     if not events:
         print("Nenhum evento cadastrado.")
@@ -102,7 +110,11 @@ def list_events():
 def add_event():
     """Register a new event"""
     clear_screen()
-    print('-----CADASTRO DE EVENTOS-----')
+    print('''
+        =================================  
+                CADASTRO DE EVENTO
+        ================================= 
+        ''')
 
     name = input('Digite o nome do evento: ').strip()
     
@@ -162,7 +174,11 @@ def add_event():
 def update_event():
     """Updates the information of an existing event"""
     clear_screen()
-    print('-----ATUALIZAR EVENTO-----')
+    print('''
+        =================================  
+                ATUALIZAR EVENTO
+        ================================= 
+        ''')
 
     name = input('Informe o nome do evento que deseja atualizar: ').strip()
     
@@ -227,7 +243,11 @@ def update_event():
 def remove_event():
     """Remove an event from the system"""
     clear_screen()
-    print('-----REMOVER EVENTO-----')
+    print('''
+        =================================  
+                REMOVER EVENTO
+        ================================= 
+        ''')
 
     name = input('Informe o nome do evento: ').strip()
     
