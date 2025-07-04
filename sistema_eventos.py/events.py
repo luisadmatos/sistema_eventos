@@ -2,14 +2,23 @@
 from datetime import datetime
 from util import clear_screen, pause, update_infos
 
+# ============================================
+# GLOBAL VARIABLES
+# ============================================
 events = []
-   
+
+# ============================================
+# AUXILIARY FUNCTIONS
+# ============================================
+
 def find_by_name(name):
+    """Searches for an event by name (case insensitive)"""
     name = name.strip().lower()
     matches = [event for event in events if event['name'].strip().lower() == name]
     return matches[0] if matches else None
     
 def select_or_create_theme():
+    """Select an existing theme or create a new one"""
     themes = ['Inteligência Artificial', 'Web', 'Segurança', 'Banco de Dados', 'Mobile']
     print('----Temas disponíveis----')
 
@@ -33,8 +42,14 @@ def select_or_create_theme():
         if choice == create_option:
             new_theme = input('Digite o tema que deseja cadastrar: ').strip()
             if new_theme:
-                # Verificar se o tema já existe (case-insensitive)
-                if any(theme.lower() == new_theme.lower() for theme in themes):
+                # Check if the theme already exists (case insensitive)
+                tema_existe = False
+                for theme in themes:
+                    if theme.lower() == new_theme.lower():
+                        tema_existe = True
+                        break
+                
+                if tema_existe:
                     print(f'Tema "{new_theme}" já existe!')
                     continue
                 themes.append(new_theme)
@@ -45,7 +60,10 @@ def select_or_create_theme():
             continue
 
         print('Opção inválida. Tente novamente.')
-    
+
+# ============================================
+# EVENT MANAGEMENT FUNCTIONS
+# ============================================
 
 def list_events():
     clear_screen()
@@ -55,14 +73,14 @@ def list_events():
         print("Nenhum evento cadastrado.")
         return
     else:
-        # Converter datas para datetime antes de ordenar
+        # Convert dates to datetime before sorting
         def get_date_for_sorting(event):
             date_obj = event['date']
             if isinstance(date_obj, str):
                 try:
                     return datetime.strptime(date_obj, '%d/%m/%Y')
                 except ValueError:
-                    return datetime.min  # Data mínima para eventos com data inválida
+                    return datetime.min  # Minimum date for events with an invalid date
             return date_obj
 
         ordered_events = sorted(events, key=get_date_for_sorting)
@@ -83,6 +101,7 @@ def list_events():
 
 
 def add_event():
+    """Register a new event"""
     clear_screen()
     print('-----CADASTRO DE EVENTOS-----')
 
@@ -106,7 +125,7 @@ def add_event():
             date_obj = datetime.strptime(date_str, '%d/%m/%Y')
             now = datetime.now()
 
-            # Verificar se a data não é muito antiga (mais de 100 anos no passado)
+            # Check that the date is not too old (more than 100 years in the past)
             if date_obj.year < now.year - 100:
                 print('Data muito antiga! Digite uma data válida.')
                 continue
@@ -141,42 +160,8 @@ def add_event():
     pause()
 
 
-def remove_event():
-    clear_screen()
-    print('-----REMOVER EVENTO-----')
-
-    name = input('Informe o nome do evento: ').strip()
-    
-    if not name:
-        print('Nome do evento não pode estar vazio!')
-        pause()
-        return
-    
-    event = find_by_name(name)
-    if not event:
-        print('Evento não encontrado!')
-        pause()
-        return
-    
-    # Mostrar informações do evento
-    date_str = event['date'].strftime('%d/%m/%Y') if isinstance(event['date'], datetime) else str(event['date'])
-    print(f'\nEvento encontrado:')
-    print(f'Nome: {event["name"]}')
-    print(f'Tema: {event["theme"]}')
-    print(f'Data: {date_str}')
-    print(f'Local: {event["location"]}')
-    
-    confirm = input('\nTem certeza que deseja remover este evento? (s/n): ').strip().lower()
-    if confirm != 's':
-        print('Remoção cancelada.')
-        pause()
-        return
-    
-    events.remove(event)
-    print(f'\nEvento {name} removido com sucesso!')
-    pause()
-
 def update_event():
+    """Updates the information of an existing event"""
     clear_screen()
     print('-----ATUALIZAR EVENTO-----')
 
@@ -196,18 +181,18 @@ def update_event():
     print(f'Evento encontrado!')
     print('Deixe em branco os campos que não deseja alterar.')
 
-    # Atualizar nome
+    # Update name
     new_name = input(f'Nome [{event["name"]}]: ').strip()
     if new_name:
         event['name'] = new_name
 
-    # Atualizar tema
+    # Update theme
     print('Deseja alterar o tema? (s/n)')
     change_theme = input().strip().lower()
     if change_theme == 's':
         event['theme'] = select_or_create_theme()
 
-    # Atualizar data
+    # update theme
     current_date = event['date']
     if isinstance(current_date, datetime):
         date_str = current_date.strftime('%d/%m/%Y')
@@ -226,11 +211,11 @@ def update_event():
         except ValueError:
             print('Formato de data incorreto! Data não foi alterada.')
 
-    # Atualizar local
+    # Update location
     new_location = input(f'Local [{event["location"]}]: ').strip()
     if new_location:
         event['location'] = new_location
-    elif not event.get('location'):  # Se o local atual estiver vazio
+    elif not event.get('location'):  # If the current location is empty
         print('Local não pode estar vazio!')
         new_location = input('Digite um local para o evento: ').strip()
         if new_location:
@@ -240,8 +225,48 @@ def update_event():
     pause()
 
 
+def remove_event():
+    """Remove an event from the system"""
+    clear_screen()
+    print('-----REMOVER EVENTO-----')
+
+    name = input('Informe o nome do evento: ').strip()
+    
+    if not name:
+        print('Nome do evento não pode estar vazio!')
+        pause()
+        return
+    
+    event = find_by_name(name)
+    if not event:
+        print('Evento não encontrado!')
+        pause()
+        return
+    
+    # Show event information
+    date_str = event['date'].strftime('%d/%m/%Y') if isinstance(event['date'], datetime) else str(event['date'])
+    print(f'\nEvento encontrado:')
+    print(f'Nome: {event["name"]}')
+    print(f'Tema: {event["theme"]}')
+    print(f'Data: {date_str}')
+    print(f'Local: {event["location"]}')
+    
+    confirm = input('\nTem certeza que deseja remover este evento? (s/n): ').strip().lower()
+    if confirm != 's':
+        print('Remoção cancelada.')
+        pause()
+        return
+    
+    events.remove(event)
+    print(f'\nEvento {name} removido com sucesso!')
+    pause()
+
+# ============================================
+# MAIN MENU
+# ============================================
 
 def submenu_events():
+    """Main menu for event management"""
     options = {
         '1': list_events,
         '2': add_event,

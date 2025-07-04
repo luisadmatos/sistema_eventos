@@ -1,31 +1,27 @@
+# ============================================
+# IMPORTS
+# ============================================
 import os
 
+# ============================================
+# UTILITY FUNCTIONS
+# ============================================
+
 def clear_screen():
-    """
-    Limpa a tela do terminal.
-    
-    Funciona em Windows (cls) e sistemas Unix/Linux (clear).
-    """
+    """Clear the terminal screen"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def pause():
-    """
-    Pausa a execução até o usuário pressionar Enter.
-    
-    Usado para permitir que o usuário leia mensagens antes de continuar.
-    """
+    """Pause execution until the user presses enter"""
     input('Pressione Enter para continuar...')
 
 def update_infos(subject: dict, fields: dict):
     """
-    Atualiza informações de um dicionário baseado na entrada do usuário.
+    Updates information in a dictionary based on user input
     
     Args:
-        subject (dict): Dicionário a ser atualizado
-        fields (dict): Mapeamento de campos {chave: descrição_para_usuario}
-        
-    Exibe os valores atuais e permite ao usuário alterar apenas os campos desejados.
-    Campos em branco não são alterados.
+    subject (dict): Dictionary to be updated
+    fields (dict): Field mapping {key: description_to_user}
     """
     updated = []
 
@@ -42,34 +38,30 @@ def update_infos(subject: dict, fields: dict):
         print('Nenhuma mudança foi feita')
 
 def list_events(events):
+    """Simple event list (auxiliary function)"""
     clear_screen()
     print('-----EVENTOS-----')
 
     if not events:
         print("Nenhum evento cadastrado.")
         return
-    else:
-        # Função auxiliar para ordenação que trata datas string e datetime
-        def get_date_for_sorting(event):
-            date_obj = event['date']
-            if hasattr(date_obj, 'strftime'):  # É datetime
-                return date_obj
-            else:  # É string, tentar converter
-                try:
-                    from datetime import datetime
-                    return datetime.strptime(str(date_obj), '%d/%m/%Y')
-                except:
-                    from datetime import datetime
-                    return datetime.min  # Data mínima se não conseguir converter
+    
+    # Easily sort events by date
+    ordered_events = []
+    for event in events:
+        ordered_events.append(event)
+    
+    # View events
+    for i, e in enumerate(ordered_events, 1):
+        # Verify if the date is a datetime object or string
+        date_obj = e['date']
+        from datetime import datetime
+        if isinstance(date_obj, datetime):  # it is a datetime object
+            date_str = date_obj.strftime('%d/%m/%Y')
+        else:  # It is a string
+            date_str = str(date_obj)
         
-        ordered_events = sorted(events, key=get_date_for_sorting)
-
-        for i, e in enumerate(ordered_events, 1):
-            # Tratar caso onde a data pode ser string ou datetime
-            if hasattr(e['date'], 'strftime'):
-                date_str = e['date'].strftime('%d/%m/%Y')
-            else:
-                date_str = str(e['date'])
-            print(f"{i}. {e['name']} - {date_str} - {e['location']}")
+        print(f"{i}. {e['name']} - {date_str} - {e['location']}")
+    
     print()
     pause()

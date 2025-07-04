@@ -1,54 +1,23 @@
+# ============================================
+# IMPORTS
+# ============================================
 from collections import Counter
 from util import clear_screen, pause
 from participants import participants
 from events import events
 
-def submenu_reports():
-    clear_screen()
-
-    options = {
-        '1': report_most_actives,
-        '2': report_most_frequent,
-        '3': report_events_by_theme,
-        '4': report_events_by_date,
-        '5': report_low_attendance_events,
-        '6': report_rate_by_theme,
-        '7': lambda: None
-    }
-
-    while True:
-        clear_screen()
-        print('''
-            =================================  
-                        RELATÓRIOS
-            =================================  
-            1. Participantes mais ativos
-            2. Eventos mais frequentes
-            3. Eventos por tema
-            4. Eventos por data
-            5. Eventos com baixa procura
-            6. Taxa de participação por tema
-            7. Voltar
-        ''')
-
-        choice = input('Escolha uma opção: ').strip()
-
-        action = options.get(choice)
-
-        if action:
-            if choice == "7":
-                action()
-                break
-            else:
-                action()
-        else:
-            print("Opção inválida!") 
-            pause()
-
+# ============================================
+# REPORTING FUNCTIONS
+# ============================================
 
 def report_most_actives():
+    """Report of the most active participants"""
     clear_screen()
-    print('====PARTICIPANTES MAIS ATIVOS====')
+    print('''
+        =================================  
+            PARTICIPANTES MAIS ATIVOS
+        ================================= 
+        ''')
 
     ranked = sorted(participants.items(), key=lambda p: len(p[1].get('wishlist',[])), reverse=True)
     if not ranked:
@@ -59,9 +28,15 @@ def report_most_actives():
     
     pause()
 
+
 def report_most_frequent():
+    """Most popular events report"""
     clear_screen()
-    print('==== EVENTOS MAIS PROCURADOS ====')
+    print('''
+        =================================  
+            EVENTOS MAIS PROCURADOS
+        ================================= 
+        ''')
 
     all_events = []
     for data in participants.values():
@@ -79,24 +54,39 @@ def report_most_frequent():
 
 
 def report_events_by_theme():
+    """Events report grouped by theme"""
     clear_screen()
-    print('====EVENTOS POR TEMA===')
+    print('''
+        =================================  
+                EVENTOS POR TEMA
+        ================================= 
+        ''')
 
-    tema_map = {}
+    theme_map = {}
     for event in events:
-        tema = event['theme']
-        tema_map.setdefault(tema, []).append(event)
+        theme = event['theme']
+        # If the theme doesn't exist in the dictionary, it creates an empty list
+        if theme not in theme_map:
+            theme_map[theme] = []
+        # Adds the event to the theme list
+        theme_map[theme].append(event)
     
-    for theme, group in tema_map.items():
+    for theme, group in theme_map.items():
         print(f'{theme}')
         for e in group:
             print(f'- {e["name"]} em {e["date"].strftime("%d/%m/%Y")}')
 
     pause()
 
+
 def report_events_by_date():
+    """Events report sorted by date"""
     clear_screen()
-    print('====EVENTOS POR DATA====')
+    print('''
+        =================================  
+                EVENTOS POR DATA
+        ================================= 
+        ''')
 
     if not events:
         print('Nenhum evento cadastrado.')
@@ -107,9 +97,15 @@ def report_events_by_date():
     
     pause()
 
+
 def report_low_attendance_events():
+    """Report of events with low demand"""
     clear_screen()
-    print('====EVENTOS COM BAIXA PROCURA====')
+    print('''
+        =================================  
+            EVENTOS COM BAIXA DEMANDA
+        ================================= 
+        ''')
 
     participation_count = {event['name']: 0 for event in events}
 
@@ -130,9 +126,15 @@ def report_low_attendance_events():
         print(f'ATENÇÃO! Necessário avaliar a possibilidade de cancelamento do evento devido a baixa adesão!')
     pause()
 
+
 def report_rate_by_theme():
+    """Participation rate report by theme"""
     clear_screen()
-    print('====TAXA DE PARTICIPAÇÃO POR TEMA====')
+    print('''
+        =================================  
+          TAXA DE PARTICIPAÇÃO POR TEMA
+        =================================
+        ''')
 
     theme_totals = {}
     theme_with_participation = {}
@@ -155,3 +157,48 @@ def report_rate_by_theme():
         print(f'{theme}: {rate:.1f}% de participação')
     
     pause()
+
+# ============================================
+# MAIN MENU
+# ============================================
+
+def submenu_reports():
+    """Main menu for generating reports"""
+    options = {
+        '1': report_most_actives,
+        '2': report_most_frequent,
+        '3': report_events_by_theme,
+        '4': report_events_by_date,
+        '5': report_low_attendance_events,
+        '6': report_rate_by_theme,
+        '7': lambda: None
+    }
+
+    while True:
+        clear_screen()
+        print('''
+            =================================  
+                        RELATÓRIOS
+            =================================  
+              
+            1. Participantes mais ativos
+            2. Eventos mais frequentes
+            3. Eventos por tema
+            4. Eventos por data
+            5. Eventos com baixa procura
+            6. Taxa de participação por tema
+            7. Voltar
+        ''')
+
+        choice = input('Escolha uma opção: ').strip()
+        action = options.get(choice)
+
+        if action:
+            if choice == "7":
+                action()
+                break
+            else:
+                action()
+        else:
+            print("Opção inválida!") 
+            pause()

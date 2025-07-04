@@ -1,25 +1,38 @@
+# ============================================
+# IMPORTS
+# ============================================
 import events
 import participants
 import reports
 from util import clear_screen
 
+# ============================================
+# AUXILIARY FUNCTIONS
+# ============================================
+
+def exit_program():
+    """Displays exit message and closes the program"""
+    print('Saindo...')
+
+# ============================================
+# MAIN MENU
+# ============================================
+
 def main_menu():
     """
-    Exibe o menu principal do sistema e gerencia a navegação entre os módulos.
+    Displays the system's main menu and manages navigation between modules.
     
-    O usuário pode escolher entre:
-    - Gerenciar Eventos
-    - Gerenciar Participantes  
-    - Relatórios
-    - Sair do programa
+    The user can choose between
+    - Manage Events
+    - Manage Participants
+    - Reports
+    - Exit the program
     """
-    clear_screen()
     options = {
         '1': events.submenu_events,
         '2': participants.submenu_participants,
         '3': reports.submenu_reports,
         '4': exit_program
-
     }
 
     while True:
@@ -46,7 +59,6 @@ def main_menu():
        )
 
         choice = input('Escolha uma opção: ').strip()
-
         action = options.get(choice)
 
         if action:
@@ -56,15 +68,18 @@ def main_menu():
             else:
                 action()
         else:
-            print("Opção inválida!") #verificar quando for feita alguma entrada invalida
-            input("Pressione Enter para continuar...")#para a mensagem nao sumir
+            print("Opção inválida!")  #
+            input("Pressione Enter para continuar...")  
 
-def exit_program():
-    """
-    Exibe mensagem de saída e encerra o programa.
-    """
-    print('Saindo...')
+# ============================================
+# MAIN EXECUTION
+# ============================================
 
 if __name__ == '__main__':
     main_menu()
 
+'''
+Important:
+I used 'try' and 'except' instead of 'if/elif' conditionals 
+to improve the system's error handling and prevent it from crashing
+'''
