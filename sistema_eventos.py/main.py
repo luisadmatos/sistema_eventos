@@ -68,7 +68,7 @@ def main_menu():
             else:
                 action()
         else:
-            print("Opção inválida!")  #
+            print("Opção inválida!")  
             input("Pressione Enter para continuar...")  
 
 # ============================================
