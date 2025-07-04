@@ -83,9 +83,8 @@ def list_events():
                     return datetime.min  # Minimum date for events with an invalid date
             return date_obj
 
-        ordered_events = sorted(events, key=get_date_for_sorting)
-
-        for i, e in enumerate(ordered_events, 1):
+        # Exibir eventos na ordem em que foram cadastrados (sem ordenação complexa)  
+        for i, e in enumerate(events, 1):
             date_obj = e['date']
             if isinstance(date_obj, str):
                 try:

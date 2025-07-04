@@ -7,34 +7,27 @@ import reports
 from util import clear_screen
 
 # ============================================
-# AUXILIARY FUNCTIONS
+# FUNÇÕES AUXILIARES
 # ============================================
 
 def exit_program():
-    """Displays exit message and closes the program"""
+    """Exibe mensagem de saída e encerra o programa"""
     print('Saindo...')
 
 # ============================================
-# MAIN MENU
+# MENU PRINCIPAL
 # ============================================
 
 def main_menu():
     """
-    Displays the system's main menu and manages navigation between modules.
+    Exibe o menu principal do sistema e gerencia a navegação entre os módulos.
     
-    The user can choose between
-    - Manage Events
-    - Manage Participants
-    - Reports
-    - Exit the program
+    O usuário pode escolher entre:
+    - Gerenciar Eventos
+    - Gerenciar Participantes  
+    - Relatórios
+    - Sair do programa
     """
-    options = {
-        '1': events.submenu_events,
-        '2': participants.submenu_participants,
-        '3': reports.submenu_reports,
-        '4': exit_program
-    }
-
     while True:
         clear_screen()
         print(
@@ -59,14 +52,16 @@ def main_menu():
        )
 
         choice = input('Escolha uma opção: ').strip()
-        action = options.get(choice)
 
-        if action:
-            if choice == "4":
-                action()
-                break
-            else:
-                action()
+        if choice == '1':
+            events.submenu_events()
+        elif choice == '2':
+            participants.submenu_participants()
+        elif choice == '3':
+            reports.submenu_reports()
+        elif choice == '4':
+            exit_program()
+            break
         else:
             print("Opção inválida!")  
             input("Pressione Enter para continuar...")  
@@ -79,7 +74,15 @@ if __name__ == '__main__':
     main_menu()
 
 '''
+
 Important:
-I used 'try' and 'except' instead of 'if/elif' conditionals 
-to improve the system's error handling and prevent it from crashing
+*I used 'try' and 'except' instead of 'if/elif' conditionals 
+to improve the system's error handling and prevent it from crashing;
+*The use of 'action( )' improves the code because it also reduces the use of conditionals
+since it takes the dictionary with options.get and executes it;
+*The use of functions such as 'clear_screen()', 'split()' and 'strip()' were used to improve 
+the readability of the system in the terminal;
+*the use of 'key=lambda' in reports.py was to help sort the elements since it receives a 
+function to apply to each element and determine its sorting criteria.
+
 '''
